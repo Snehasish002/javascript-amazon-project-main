@@ -1,15 +1,15 @@
 class Cart {
     cartItems;//Shortcut of " cartItems = undefined; "
-    localStorageKey;
+    #localStorageKey;// to keep localStorageKey private we use number sign or ' # '.
 
     constructor (localStorageKey){
-        this.localStorageKey = localStorageKey;
-        this.loadFromStorage();
+        this.#localStorageKey = localStorageKey;
+        this.#loadFromStorage();
         
     }
     
-    loadFromStorage(){
-        this.cartItems = JSON.parse(localStorage.getItem(this.localStorageKey));
+    #loadFromStorage(){
+        this.cartItems = JSON.parse(localStorage.getItem(this.#localStorageKey));
     
         if (!this.cartItems){
             this.cartItems = [{
@@ -27,7 +27,7 @@ class Cart {
 
 
     saveToStorage(){
-        localStorage.setItem(this.localStorageKey, JSON.stringify(this.cartItems));
+        localStorage.setItem(this.#localStorageKey, JSON.stringify(this.cartItems));
     };
 
     addToCart (productId) {
@@ -86,6 +86,9 @@ class Cart {
 
 const cart = new Cart('cart-oop'); //' new ' This generates a new object using our class
 const businessCart = new Cart('business-cart');
+
+
+
 
 
 
