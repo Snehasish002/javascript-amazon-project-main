@@ -2,6 +2,7 @@ import { cart } from "../../data/cart.js";
 import { getProduct } from "../../data/products.js";
 import { getDeliveryOption } from "../../data/deliveryOptions.js";
 import {formatCurrency} from "../utils/money.js";
+import { addOrder } from "../../data/orders.js";
 
 export function renderPaymentummary (){
 
@@ -62,7 +63,8 @@ export function renderPaymentummary (){
             </div>
         </div>
 
-        <button class="place-order-button button-primary">
+        <button class="place-order-button button-primary
+        js-place-order">
             Place your order
         </button>
     
@@ -73,4 +75,57 @@ export function renderPaymentummary (){
     document.querySelector('.js-payment-summary')
         .innerHTML = paymentSummeryHTML;
 
+
+    document.querySelector('.js-place-order')
+
+        //when we click this button,
+        //make a request to the backend to create the order.
+        .addEventListener('click', async () => {
+
+            try {
+                const response = await fetch('https://supersimplebackend.dev/orders', {
+
+                    method: 'POST',
+
+                    //headers give the backend more information about our request.
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+
+                    body: JSON.stringify({
+                        cart: cart
+                    })
+
+                });
+
+                const order = await response.json();
+                addOrder(order);
+
+            } catch (error){
+
+                console.log('Unexpected error, Try again later.');
+            }
+
+            window.location.href = 'orders.html';
+
+            //To create a POST request lets give second parameter a Object to the fetch.
+            /*const response = await fetch('https://supersimplebackend.dev/orders', {
+
+                method: 'POST',
+
+                //headers give the backend more information about our request.
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+
+                body: JSON.stringify({
+                    cart: cart
+                })
+
+            });
+
+            const order = await response.json();
+            addOrder(order);*/
+        });
+    
 }
