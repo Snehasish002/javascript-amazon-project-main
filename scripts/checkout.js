@@ -8,17 +8,31 @@ import { loadCart } from "../data/cart.js";
 
 
 async function loadPage() {
+
+    try {
+
+        //throw 'error1';
+
+        await loadProductsFetch();
+
+        const value = await new Promise((resolve) => {
+
+            //throw 'error2';
+
+            loadCart(() => {
+
+                //reject ('error3');
+                resolve('value3');
+            });
+        });
+
+    } catch (error) {
+        console.log('Uexpected error. Please try again later.');
+    }
     
 
 
-    await loadProductsFetch();
-
-    const value = await new Promise((resolve) => {
-        loadCart(() => {
-            resolve('value3');
-        });
-    });
-
+    
     
 
     renderPaymentummary();
